@@ -370,6 +370,7 @@ public class EntityRenderer implements IResourceManagerReloadListener
             ShaderLinkHelper.setNewStaticShaderLinkHelper();
         }
 
+        this.updateZoomAnimate();
         this.updateFovModifierHand();
         this.updateTorchFlicker();
         this.fogColor2 = this.fogColor1;
@@ -558,6 +559,32 @@ public class EntityRenderer implements IResourceManagerReloadListener
         }
     }
 
+    float animate1, animate2;
+
+    /**
+     * Update Zoom Animate
+     */
+    private void updateZoomAnimate()
+    {
+        float f = 1.0F;
+
+        if(Config.zoomMode)
+        {
+            f = 4.0F;
+        }
+
+        this.animate2 = this.animate1;
+        this.animate1 += (f - this.animate1) * 0.5F;
+
+        if (this.animate1 > 3.9F) {
+            animate1 = 4.0F;
+        }
+
+        if (this.animate1 < 0.1F) {
+            animate1 = 0.0F;
+        }
+    }
+
     /**
      * Update FOV modifier hand
      */
@@ -596,58 +623,34 @@ public class EntityRenderer implements IResourceManagerReloadListener
         }
         else
         {
-            Entity var3 = this.mc.getRenderViewEntity();
-            float var4 = 70.0F;
+            Entity entity = this.mc.getRenderViewEntity();
+            float f = 70.0F;
 
             if (p_78481_2_)
             {
-                var4 = this.mc.gameSettings.fovSetting;
+                f = this.mc.gameSettings.fovSetting;
 
                 if (Config.isDynamicFov())
                 {
-                    var4 *= this.fovModifierHandPrev + (this.fovModifierHand - this.fovModifierHandPrev) * partialTicks;
+                    f *= this.fovModifierHandPrev + (this.fovModifierHand - this.fovModifierHandPrev) * partialTicks;
                 }
             }
 
-            boolean zoomActive = false;
+            boolean flag = false;
 
             if (this.mc.currentScreen == null)
             {
-                GameSettings var10000 = this.mc.gameSettings;
-                zoomActive = GameSettings.isKeyDown(this.mc.gameSettings.ofKeyBindZoom);
+                flag = GameSettings.isKeyDown(this.mc.gameSettings.ofKeyBindZoom);
             }
-            if(!zoomActive){
-            	if(zoomDist > 1){
-            		//zoomDist = 1;
-            		zoomDist += ((1-zoomDist)/(60*mc.getDebugFps()*0.04))-0.000001;
-            		zoomDist += ((1-zoomDist)/(60*mc.getDebugFps()*0.04))-0.000001;
-            	}
-            }
-            if(Double.isInfinite(zoomDist) || Double.isNaN(zoomDist)){
-            	zoomDist = 1;
-            }
-            if(zoomDist > 1 || zoomDist < 4){
-            var4 /= this.zoomDist;
-            }
-           
-            if (zoomActive)
+
+            f /= this.animate2 + (this.animate1 - this.animate2) * partialTicks;
+
+            if (flag)
             {
-                if (!Config.zoomMode)
-                {
+                if (!Config.zoomMode) {
                     Config.zoomMode = true;
                     this.mc.gameSettings.smoothCamera = true;
                 }
-
-                if (Config.zoomMode)
-                {
-                	if(zoomDist < 4){
-                		//zoomDist += 0.01;
-                		zoomDist += (((4)-zoomDist)/(120*mc.getDebugFps()*0.04))+0.000001;
-                	}
-                   
-                    
-                }
-                
             }
             else if (Config.zoomMode)
             {
@@ -656,23 +659,22 @@ public class EntityRenderer implements IResourceManagerReloadListener
                 this.mouseFilterXAxis = new MouseFilter();
                 this.mouseFilterYAxis = new MouseFilter();
                 this.mc.renderGlobal.displayListEntitiesDirty = true;
-                
             }
 
-            if (var3 instanceof EntityLivingBase && ((EntityLivingBase)var3).getHealth() <= 0.0F)
+            if (entity instanceof EntityLivingBase && ((EntityLivingBase)entity).getHealth() <= 0.0F)
             {
-                float var6 = (float)((EntityLivingBase)var3).deathTime + partialTicks;
-                var4 /= (1.0F - 500.0F / (var6 + 500.0F)) * 2.0F + 1.0F;
+                float f1 = (float)((EntityLivingBase)entity).deathTime + partialTicks;
+                f /= (1.0F - 500.0F / (f1 + 500.0F)) * 2.0F + 1.0F;
             }
 
-            Block var61 = ActiveRenderInfo.func_180786_a(this.mc.theWorld, var3, partialTicks);
+            Block block = ActiveRenderInfo.func_180786_a(this.mc.theWorld, entity, partialTicks);
 
-            if (var61.getMaterial() == Material.water)
+            if (block.getMaterial() == Material.water)
             {
-                var4 = var4 * 60.0F / 70.0F;
+                f = f * 60.0F / 70.0F;
             }
 
-            return var4;
+            return f;
         }
     }
 

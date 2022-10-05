@@ -33,7 +33,6 @@ public class SettingsFile {
             try {
                 if (!f2.loadOnStart()) continue;
                 f2.loadFile();
-                continue;
             }
             catch (Exception e) {
                 e.printStackTrace();

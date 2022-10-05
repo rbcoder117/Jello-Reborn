@@ -527,6 +527,9 @@ public class GuiMainMenu extends GuiScreen implements GuiYesNoCallback
         var4.draw();
     }
 
+    public final int bgHeight = 1194;
+    public final int bgWidth = 3841;
+
     /**
      * Draws the screen and all the components in it. Args : mouseX, mouseY, renderPartialTicks
      */
@@ -546,7 +549,7 @@ public class GuiMainMenu extends GuiScreen implements GuiYesNoCallback
         this.mc.getTextureManager().bindTexture(new ResourceLocation("Jello/mainmenubg.png"));
         GlStateManager.color(1.0F, 1.0F, 1.0F, 1.0F);
         ScaledResolution sr = new ScaledResolution(this.mc, this.mc.displayWidth, this.mc.displayHeight);
-        this.drawModalRectWithCustomSizedTexture(-1177/2 - 372 - animatedMouseX + sr.getScaledWidth(), -34/2 +8 - animatedMouseY/9.5f + sr.getScaledHeight()/19 - 19, 0, 0, 3841/2, 1194/2, 3841/2, 1194/2);
+        drawModalRectWithCustomSizedTexture(-1177/2f - 372 - animatedMouseX + sr.getScaledWidth(), -34/2f + 8 - animatedMouseY / 9.5f + sr.getScaledHeight()/19f - 19, 0, 0, bgWidth/2f, bgHeight/2f, bgWidth/2f, bgHeight/2f);
        
         FontUtil.jelloFont.drawString("", 1, 1, -1);
         GlStateManager.disableAlpha();
@@ -557,7 +560,7 @@ public class GuiMainMenu extends GuiScreen implements GuiYesNoCallback
         
         FontUtil.jelloFont.drawNoBSString("© Jello by Mentalfrostbyte", 5, sr.getScaledHeight() - 5 - FontUtil.jelloFont.getHeight() + 1, -1);
         
-        FontUtil.jelloFont.drawNoBSString("Minecraft 1.9.4 / Jello 0.1", sr.getScaledWidth() - 5 - 0.5f - FontUtil.jelloFont.getStringWidth("Minecraft 1.9.4 / Jello 0.1") + 1, sr.getScaledHeight() - 5 - FontUtil.jelloFont.getHeight() + 1, -1);
+        FontUtil.jelloFont.drawNoBSString("Minecraft 1.8.9 / Jello Reborn II", sr.getScaledWidth() - 5 - 0.5f - FontUtil.jelloFont.getStringWidth("Minecraft 1.8.9 / Jello Reborn II") + 1, sr.getScaledHeight() - 5 - FontUtil.jelloFont.getHeight() + 1, -1);
         
         this.mc.getTextureManager().bindTexture(new ResourceLocation("Jello/JelloLogo.png"));
         this.drawModalRectWithCustomSizedTexture(sr.getScaledWidth()/2 - 323/4f, sr.getScaledHeight()/2 - 161/2f + 11 - 32/2f + 0.5f, 0, 0, 323/2f, 161/2f, 323/2f, 161/2f);
